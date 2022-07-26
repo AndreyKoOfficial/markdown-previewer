@@ -1,25 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+import React  from 'react';
+import "./App.css";
+import { marked } from 'marked';
 
-function App() {
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      markdown: `# React Markdown Previewer!
+## This is a sub-heading...
+### A eto
+
+     
+Or... wait for it... **_both!_**
+        
+And feel free to go crazy ~~crossing stuff out~~.
+
+            
+There's also [links](https://ashusingh.me), and
+> Block Quote`,
+    };
+  }
+
+  updateMarkdown(markdown) {
+    this.setState({ markdown });
+  }
+
+  render(){
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div className="field-wrapper">
+          <div className="column">
+            <h3>Input</h3>
+            <div className="mark-input">
+            <textarea 
+            id="editor"
+            className="input"
+            value={this.state.markdown}
+            onChange={(e) => {
+              this.updateMarkdown(e.target.value);
+            }} 
+            ></textarea></div>
+          </div>
+          <div className="column">
+            <h3>Output</h3>
+            <div
+                id="preview"
+                dangerouslySetInnerHTML={{
+                  __html: marked(this.state.markdown),
+                }}
+              ></div>
+          </div>
+        </div>
       </header>
     </div>
-  );
+    );
+  }
 }
-
-export default App;
